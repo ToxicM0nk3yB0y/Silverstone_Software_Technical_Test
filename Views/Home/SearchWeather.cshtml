@@ -1,0 +1,97 @@
+﻿@model Silverstone_Software_Technical_Test.Models.AllDTO
+@{
+    ViewBag.Title = "Home Page";
+
+}
+
+
+<style type="text/css">
+    .hidden {
+        display: none;
+    }
+</style>
+
+<div class="jumbotron">
+    <h1>Weather Or Not Here We Go</h1>
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("SearchWeather", "Home", FormMethod.Post))
+    {
+        <input type="text" name="WeatherSearchBar" placeholder="Weather Search Bar" />
+        <input type="submit" value="Submit" />
+        
+    }
+</div>
+
+<div id="Divresults">
+    @if (Model.WeatherInfo != null)
+    {
+        if (Model.WeatherInfo.Current != null)
+        {
+    <div style="text-align:center">
+        <div class="row" style="text-align:center">
+            <div class="col-md-12"> @Html.LabelFor(M => M.WeatherInfo.Location.name): @Model.WeatherInfo.Location.name </div>
+            <div class="col-md-6"> @Html.LabelFor(M => M.WeatherInfo.Location.lat): @Model.WeatherInfo.Location.lat</div>
+            <div class="col-md-6"> @Html.LabelFor(M => M.WeatherInfo.Location.lon): @Model.WeatherInfo.Location.lon</div>
+        </div>
+    </div>
+        
+    <div class="row"></div>
+
+        <div class="row">
+            <div class="col-md-4"> <strong>Header one</strong> </div>
+            <div class="col-md-4"> <strong>Value</strong></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <P>@Html.LabelFor(M => M.WeatherInfo.Current.Temp_c)</P>
+                <p>@Html.LabelFor(M => M.WeatherInfo.Current.Humidity)</p>
+                <p>@Html.LabelFor(M => M.WeatherInfo.forecast.forecastday.First().Astro.sunrise)</p>
+                <p>@Html.LabelFor(M => M.WeatherInfo.forecast.forecastday.First().Astro.sunset)</p>
+            </div>
+
+            <div class="col-md-4">
+
+                @if (Model.WeatherInfo != null)
+                {
+
+                    if (Model.WeatherInfo.forecast != null)
+                    {
+
+
+                        <P>@(Model.WeatherInfo.Current?.Temp_c ?? 0.00)</P>
+                        <p>@(Model.WeatherInfo.Current?.Humidity ?? 0.00)</p>
+                        <p>@(Model.WeatherInfo.forecast.forecastday.First().Astro.sunrise ?? "")</p>
+                        <p>@(Model.WeatherInfo.forecast.forecastday.First().Astro.sunset ?? "")</p>
+
+                    }
+                }
+
+            </div>
+        </div>
+        <p style="text-align:center"><img src=@(Model.WeatherInfo.forecast.forecastday.First().Hour.First().Condition.icon ?? "") /></p>
+
+
+        }
+        }
+
+
+        <div>
+            @if (Model.FullErrorDTO != null)
+            {
+                if (Model.FullErrorDTO.Error.Code != null)
+                {
+                    <header><h1 style="text-align:center"> Error </h1></header>
+                    <p style="text-align:center">@Model.FullErrorDTO.Error.Code.Value ---- @Model.FullErrorDTO.Error.Message </p>
+                }
+            }
+        </div>
+
+
+
+
+
+    </div>
+
